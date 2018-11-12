@@ -17,10 +17,11 @@ obj
 /.project
 /.settings
 /nbproject
+/console/bn
 
 /aclocal.m4
 /autom4te.cache
-/build-aux
+/build-*
 /config.*
 /configure
 /libtool
