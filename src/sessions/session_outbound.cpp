@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2017 libbitcoin developers (see AUTHORS)
+ * Copyright (c) 2011-2018 libbitcoin developers (see AUTHORS)
  *
  * This file is part of libbitcoin.
  *
@@ -58,9 +58,8 @@ void session_outbound::attach_protocols(channel::ptr channel)
         attach<protocol_header_in>(channel, chain_)->start();
 
     attach<protocol_block_sync>(channel, chain_)->start();
-    ////attach<protocol_block_out>(channel, chain_)->start();
-    ////attach<protocol_transaction_in>(channel, chain_)->start();
-    ////attach<protocol_transaction_out>(channel, chain_)->start();
+    attach<protocol_transaction_in>(channel, chain_)->start();
+    attach<protocol_transaction_out>(channel, chain_)->start();
     attach<protocol_address_31402>(channel)->start();
 }
 

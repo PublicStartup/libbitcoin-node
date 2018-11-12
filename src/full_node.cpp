@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2017 libbitcoin developers (see AUTHORS)
+ * Copyright (c) 2011-2018 libbitcoin developers (see AUTHORS)
  *
  * This file is part of libbitcoin.
  *
@@ -166,6 +166,7 @@ void full_node::handle_running(const code& ec, result_handler handler)
     LOG_INFO(LOG_NODE)
         << "Pending candidate downloads (" << reservations_.size() << ").";
 
+    // Prime validator.
     const auto next_validatable_height = top_valid_candidate_height + 1u;
     if (chain_.get_validatable(hash, next_validatable_height))
     {
@@ -238,18 +239,21 @@ bool full_node::handle_reorganized(code ec, size_t fork_height,
         return true;
 
     auto height = fork_height + outgoing->size();
+
+    // TODO: add statistical reporting.
     for (const auto block: reverse(*outgoing))
     {
-        LOG_DEBUG(LOG_NODE)
-            << "Outgoing #" << height-- << " ["
-            << encode_hash(block->header().hash()) << "]";
+        LOG_INFO(LOG_NODE)
+            << "Popped #" << height-- << " ["
+            << encode_hash(block->hash()) << "]";
     }
 
+    // TODO: add statistical reporting.
     for (const auto block: *incoming)
     {
-        LOG_DEBUG(LOG_NODE)
-            << "Incoming #" << ++height << " ["
-            << encode_hash(block->header().hash()) << "]";
+        LOG_INFO(LOG_NODE)
+            << "Validated #" << ++height << " ["
+            << encode_hash(block->hash()) << "]";
     }
 
     const auto top_height = fork_height + incoming->size();
